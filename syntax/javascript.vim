@@ -94,8 +94,10 @@ syntax region  jsRegexpString    start=+\(\(\(return\|case\)\s\+\)\@<=\|\(\([)\]
 syntax match   jsNumber          /\<-\=\d\+L\=\>\|\<0[xX]\x\+\>/
 syntax keyword jsNumber          Infinity
 syntax match   jsFloat           /\<-\=\%(\d\+\.\d\+\|\d\+\.\|\.\d\+\)\%([eE][+-]\=\d\+\)\=\>/
-syntax match   jsObjectKey       /\<[a-zA-Z_$][0-9a-zA-Z_$]*\(\s*:\)\@=/ contains=jsFunctionKey
-syntax match   jsFunctionKey     /\<[a-zA-Z_$][0-9a-zA-Z_$]*\(\s*:\s*function\s*\)\@=/ contained
+syntax match   jsObjectKey       /[a-zA-Z_$][0-9a-zA-Z_$\-]*\(\s*:\)\@=/ contains=jsFunctionKey
+syntax match   jsFunctionKey     /[a-zA-Z_$][0-9a-zA-Z_$\-]*\(\s*:\s*function\s*\)\@=/ contained
+"syntax region  jsJquery          start="/\(\$\)/" end=+$+ contains=jsJqueryKeyWords
+"syntax keyword jsJqueryKeyWords  attr each ajax append prepend
 
 "" JavaScript Prototype
 syntax keyword jsPrototype      prototype
@@ -103,12 +105,14 @@ syntax keyword jsPrototype      prototype
 if g:javascript_conceal == 1
   syntax keyword jsNull           null conceal cchar=ø
   syntax keyword jsThis           this conceal cchar=@
+  syntax keyword jsThat           that conceal cchar=@
   syntax keyword jsReturn         return conceal cchar=⇚
   syntax keyword jsUndefined      undefined conceal cchar=¿
   syntax keyword jsNan            NaN conceal cchar=ℕ
 else
   syntax keyword jsNull           null
   syntax keyword jsThis           this
+  syntax keyword jsThat           that
   syntax keyword jsReturn         return
   syntax keyword jsUndefined      undefined
   syntax keyword jsNan            NaN
@@ -149,7 +153,7 @@ syntax keyword jsFutureKeys     abstract enum int short boolean export interface
 " Follow stuff should be highligh within a special context
 " While it can't be handled with context depended with Regex based highlight
 " So, turn it off by default
-if exists("javascript_enable_domhtmlcss")
+"if exists("javascript_enable_domhtmlcss")
 
     " DOM2 things
     syntax match jsDomElemAttrs     contained /\%(nodeName\|nodeValue\|nodeType\|parentNode\|childNodes\|firstChild\|lastChild\|previousSibling\|nextSibling\|attributes\|ownerDocument\|namespaceURI\|prefix\|localName\|tagName\)\>/
@@ -157,6 +161,8 @@ if exists("javascript_enable_domhtmlcss")
     " HTML things
     syntax match jsHtmlElemAttrs    contained /\%(className\|clientHeight\|clientLeft\|clientTop\|clientWidth\|dir\|id\|innerHTML\|lang\|length\|offsetHeight\|offsetLeft\|offsetParent\|offsetTop\|offsetWidth\|scrollHeight\|scrollLeft\|scrollTop\|scrollWidth\|style\|tabIndex\|title\)\>/
     syntax match jsHtmlElemFuncs    contained /\%(blur\|click\|focus\|scrollIntoView\|addEventListener\|dispatchEvent\|removeEventListener\|item\)\>/ nextgroup=jsParen skipwhite
+    syntax match jsJqueryFuncs      contained /\%(blur\|click\|focus\|mousemove\|mouseover\|mousedown\|mouseup\|mouseout\|mousein\|keydown\|keyup\|bind\|delegate\|die\|live\|off\|on\|one\|trigger\|triggerHandler\|unbind\|undelegate\|load\|attr\|appendTo\|prependTo\|append\|prepend\|each\|prep\|prev\|next\|show\|hide\|val\|wrap\|unwrap\|wrapAll\|wrapInner\|toggle\|toggleClass\|css\|parent\|parents\|closest\|map\|reduce\|add\|addClass\|remove\|removeClass\|removeAttr\|after\|before\|children\|clone\|concat\|contains\|data\|empty\|eq\|filter\|find\|first\|forEach\|get\|has\|hasClass\|hight\|witdh\|html\|index\|indexOf\|insertAfter\|insertBefore\|is\|last\|not\|offset\|offsetParent\|pluck\|position\|push\|ready\|replaceWith\|scrollTop\|siblings\|size\|test\)\>/ nextgroup=jsParen skipwhite
+    syntax match jsJqueryCoreFuncs  contained /\%(each\|ajax\|get\|post\|extend\|fn\|grep\|inArray\|isArray\|isFunction\|isPlainObject\|isWindow\|grep\|contains\|map\|parseJSON\|trim\|type\)\>/
 
     " CSS Styles in JavaScript
     syntax keyword jsCssStyles      contained color font fontFamily fontSize fontSizeAdjust fontStretch fontStyle fontVariant fontWeight letterSpacing lineBreak lineHeight quotes rubyAlign rubyOverhang rubyPosition
@@ -173,15 +179,17 @@ if exists("javascript_enable_domhtmlcss")
 
     " Highlight ways
     syntax match jsDotNotation      "\." nextgroup=jsPrototype,jsDomElemAttrs,jsDomElemFuncs,jsHtmlElemAttrs,jsHtmlElemFuncs
+    syntax match jsDotNotation      "\." nextgroup=jsJqueryFuncs
+    syntax match jsDotNotation      "\$\." nextgroup=jsJqueryCoreFuncs
     syntax match jsDotNotation      "\.style\." nextgroup=jsCssStyles
 
-endif "DOM/HTML/CSS
+"endif "DOM/HTML/CSS
 
 "" end DOM/HTML/CSS specified things
 
 
 "" Code blocks
-syntax cluster jsExpression contains=jsComment,jsLineComment,jsDocComment,jsStringD,jsStringS,jsRegexpString,jsNumber,jsFloat,jsThis,jsOperator,jsBooleanTrue,jsBooleanFalse,jsNull,jsFunction,jsGlobalObjects,jsExceptions,jsFutureKeys,jsDomErrNo,jsDomNodeConsts,jsHtmlEvents,jsDotNotation,jsBracket,jsParen,jsBlock,jsFuncCall,jsUndefined,jsNan,jsKeyword,jsStorageClass,jsPrototype,jsBuiltins,jsNoise
+syntax cluster jsExpression contains=jsComment,jsLineComment,jsDocComment,jsStringD,jsStringS,jsRegexpString,jsNumber,jsFloat,jsThis,jsThat,jsOperator,jsBooleanTrue,jsBooleanFalse,jsNull,jsFunction,jsGlobalObjects,jsExceptions,jsFutureKeys,jsDomErrNo,jsDomNodeConsts,jsHtmlEvents,jsDotNotation,jsBracket,jsParen,jsBlock,jsFuncCall,jsUndefined,jsNan,jsKeyword,jsStorageClass,jsPrototype,jsBuiltins,jsNoise
 syntax cluster jsAll        contains=@jsExpression,jsLabel,jsConditional,jsRepeat,jsReturn,jsStatement,jsTernaryIf,jsException
 syntax region  jsBracket    matchgroup=jsBrackets     start="\[" end="\]" contains=@jsAll,jsParensErrB,jsParensErrC,jsBracket,jsParen,jsBlock,@htmlPreproc fold
 syntax region  jsParen      matchgroup=jsParens       start="("  end=")"  contains=@jsAll,jsParensErrA,jsParensErrC,jsParen,jsBracket,jsBlock,@htmlPreproc fold
@@ -265,6 +273,7 @@ if version >= 508 || !exists("did_javascript_syn_inits")
   HiLink jsOperator             Operator
   HiLink jsStorageClass         StorageClass
   HiLink jsThis                 Special
+  HiLink jsThat                 Special
   HiLink jsNan                  Number
   HiLink jsNull                 Type
   HiLink jsUndefined            Type
@@ -283,6 +292,10 @@ if version >= 508 || !exists("did_javascript_syn_inits")
   HiLink jsExceptions           Special
   HiLink jsFutureKeys           Special
   HiLink jsBuiltins             Special
+  HiLink jsObjectKey            Define
+  HiLink jsFunctionKey          Define
+  HiLink jsJqueryKeyWords       Label
+        
 
   HiLink jsDomErrNo             Constant
   HiLink jsDomNodeConsts        Constant
@@ -291,7 +304,9 @@ if version >= 508 || !exists("did_javascript_syn_inits")
 
   HiLink jsHtmlEvents           Special
   HiLink jsHtmlElemAttrs        Label
-  HiLink jsHtmlElemFuncs        PreProc
+  HiLink jsHtmlElemFuncs        StorageClass
+  HiLink jsJqueryFuncs          StorageClass
+  HiLink jsJqueryCoreFuncs      StorageClass
 
   HiLink jsCssStyles            Label
 
