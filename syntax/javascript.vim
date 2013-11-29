@@ -94,8 +94,8 @@ syntax region  jsRegexpString    start=+\(\(\(return\|case\)\s\+\)\@<=\|\(\([)\]
 syntax match   jsNumber          /\<-\=\d\+L\=\>\|\<0[xX]\x\+\>/
 syntax keyword jsNumber          Infinity
 syntax match   jsFloat           /\<-\=\%(\d\+\.\d\+\|\d\+\.\|\.\d\+\)\%([eE][+-]\=\d\+\)\=\>/
-syntax match   jsObjectKey       /[a-zA-Z_$][0-9a-zA-Z_$\-]*\(\s*:\)\@=/ contains=jsFunctionKey
-syntax match   jsFunctionKey     /[a-zA-Z_$][0-9a-zA-Z_$\-]*\(\s*:\s*function\s*\)\@=/ contained
+syntax match   jsObjectKey       /\<[a-zA-Z_$][0-9a-zA-Z_$\-]*\(\s*:\)\@=/ contains=jsFunctionKey
+syntax match   jsFunctionKey     /\<[a-zA-Z_$][0-9a-zA-Z_$\-]*\(\s*:\s*function\s*\)\@=/ contained
 
 "" JavaScript Prototype
 syntax keyword jsPrototype      prototype
@@ -155,7 +155,7 @@ syntax keyword jsFutureKeys     abstract enum int short boolean export interface
 
     " DOM2 things
     syntax match jsDomElemAttrs     contained /\%(nodeName\|nodeValue\|nodeType\|parentNode\|childNodes\|firstChild\|lastChild\|previousSibling\|nextSibling\|attributes\|ownerDocument\|namespaceURI\|prefix\|localName\|tagName\)\>/
-    syntax match jsDomElemFuncs     contained /\%(insertBefore\|replaceChild\|removeChild\|appendChild\|hasChildNodes\|cloneNode\|normalize\|isSupported\|hasAttributes\|getAttribute\|setAttribute\|removeAttribute\|getAttributeNode\|setAttributeNode\|removeAttributeNode\|getElementsByTagName\|getAttributeNS\|setAttributeNS\|removeAttributeNS\|getAttributeNodeNS\|setAttributeNodeNS\|getElementsByTagNameNS\|hasAttribute\|hasAttributeNS\)\>/ nextgroup=jsParen skipwhite
+    syntax match jsDomElemFuncs     contained /\%(insertBefore\|replaceChild\|removeChild\|appendChild\|hasChildNodes\|cloneNode\|normalize\|isSupported\|hasAttributes\|getAttribute\|setAttribute\|removeAttribute\|getAttributeNode\|setAttributeNode\|removeAttributeNode\|getElementsByTagName\|getAttributeNS\|setAttributeNS\|removeAttributeNS\|getAttributeNodeNS\|setAttributeNodeNS\|getElementsByTagNameNS\|hasAttribute\|hasAttributeNS\|createDocumentFragment\)\>/ nextgroup=jsParen skipwhite
     " HTML things
     syntax match jsHtmlElemAttrs    contained /\%(className\|clientHeight\|clientLeft\|clientTop\|clientWidth\|dir\|id\|innerHTML\|lang\|length\|offsetHeight\|offsetLeft\|offsetParent\|offsetTop\|offsetWidth\|scrollHeight\|scrollLeft\|scrollTop\|scrollWidth\|style\|tabIndex\|title\)\>/
     syntax match jsHtmlElemFuncs    contained /\%(blur\|click\|focus\|scrollIntoView\|addEventListener\|dispatchEvent\|removeEventListener\|item\)\>/ nextgroup=jsParen skipwhite
@@ -261,7 +261,7 @@ if version >= 508 || !exists("did_javascript_syn_inits")
   HiLink jsException            Exception
   HiLink jsKeyword              Keyword
   HiLink jsFunction             Type
-  HiLink jsFuncName             Function
+  HiLink jsFuncName             Normal
   HiLink jsArgsObj              Special
   HiLink jsError                Error
   HiLink jsParensError          Error
@@ -290,7 +290,7 @@ if version >= 508 || !exists("did_javascript_syn_inits")
   HiLink jsExceptions           Special
   HiLink jsFutureKeys           Special
   HiLink jsBuiltins             Special
-  HiLink jsObjectKey            Define
+  HiLink jsObjectKey            Label
   HiLink jsFunctionKey          Define
   HiLink jsJqueryKeyWords       Label
         
@@ -302,9 +302,9 @@ if version >= 508 || !exists("did_javascript_syn_inits")
 
   HiLink jsHtmlEvents           Special
   HiLink jsHtmlElemAttrs        Label
-  HiLink jsHtmlElemFuncs        StorageClass
-  HiLink jsJqueryFuncs          StorageClass
-  HiLink jsJqueryCoreFuncs      StorageClass
+  HiLink jsHtmlElemFuncs        Function
+  HiLink jsJqueryFuncs          Function
+  HiLink jsJqueryCoreFuncs      Function
 
   HiLink jsCssStyles            Label
 
