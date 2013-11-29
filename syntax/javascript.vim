@@ -96,8 +96,6 @@ syntax keyword jsNumber          Infinity
 syntax match   jsFloat           /\<-\=\%(\d\+\.\d\+\|\d\+\.\|\.\d\+\)\%([eE][+-]\=\d\+\)\=\>/
 syntax match   jsObjectKey       /[a-zA-Z_$][0-9a-zA-Z_$\-]*\(\s*:\)\@=/ contains=jsFunctionKey
 syntax match   jsFunctionKey     /[a-zA-Z_$][0-9a-zA-Z_$\-]*\(\s*:\s*function\s*\)\@=/ contained
-"syntax region  jsJquery          start="/\(\$\)/" end=+$+ contains=jsJqueryKeyWords
-"syntax keyword jsJqueryKeyWords  attr each ajax append prepend
 
 "" JavaScript Prototype
 syntax keyword jsPrototype      prototype
@@ -161,7 +159,7 @@ syntax keyword jsFutureKeys     abstract enum int short boolean export interface
     " HTML things
     syntax match jsHtmlElemAttrs    contained /\%(className\|clientHeight\|clientLeft\|clientTop\|clientWidth\|dir\|id\|innerHTML\|lang\|length\|offsetHeight\|offsetLeft\|offsetParent\|offsetTop\|offsetWidth\|scrollHeight\|scrollLeft\|scrollTop\|scrollWidth\|style\|tabIndex\|title\)\>/
     syntax match jsHtmlElemFuncs    contained /\%(blur\|click\|focus\|scrollIntoView\|addEventListener\|dispatchEvent\|removeEventListener\|item\)\>/ nextgroup=jsParen skipwhite
-    syntax match jsJqueryFuncs      contained /\%(blur\|click\|focus\|mousemove\|mouseover\|mousedown\|mouseup\|mouseout\|mousein\|keydown\|keyup\|bind\|delegate\|die\|live\|off\|on\|one\|trigger\|triggerHandler\|unbind\|undelegate\|load\|attr\|appendTo\|prependTo\|append\|prepend\|each\|prep\|prev\|next\|show\|hide\|val\|wrap\|unwrap\|wrapAll\|wrapInner\|toggle\|toggleClass\|css\|parent\|parents\|closest\|map\|reduce\|add\|addClass\|remove\|removeClass\|removeAttr\|after\|before\|children\|clone\|concat\|contains\|data\|empty\|eq\|filter\|find\|first\|forEach\|get\|has\|hasClass\|hight\|witdh\|html\|index\|indexOf\|insertAfter\|insertBefore\|is\|last\|not\|offset\|offsetParent\|pluck\|position\|push\|ready\|replaceWith\|scrollTop\|siblings\|size\|test\)\>/ nextgroup=jsParen skipwhite
+    syntax match jsJqueryFuncs      contained /\%(blur\|click\|focus\|mousemove\|mouseover\|mousedown\|mouseup\|mouseout\|mousein\|keydown\|keyup\|bind\|delegate\|die\|live\|off\|on\|one\|trigger\|triggerHandler\|unbind\|undelegate\|load\|attr\|appendTo\|prependTo\|append\|prepend\|each\|prep\|prev\|next\|show\|hide\|val\|wrap\|unwrap\|wrapAll\|wrapInner\|toggle\|toggleClass\|css\|parent\|parents\|closest\|map\|reduce\|add\|addClass\|remove\|removeClass\|removeAttr\|after\|before\|children\|clone\|concat\|contains\|data\|empty\|eq\|filter\|find\|first\|forEach\|get\|has\|hasClass\|height\|witdh\|html\|index\|indexOf\|insertAfter\|insertBefore\|is\|last\|not\|offset\|offsetParent\|pluck\|position\|push\|ready\|replaceWith\|scrollTop\|siblings\|size\|test\)\>/ nextgroup=jsParen skipwhite
     syntax match jsJqueryCoreFuncs  contained /\%(each\|ajax\|get\|post\|extend\|fn\|grep\|inArray\|isArray\|isFunction\|isPlainObject\|isWindow\|grep\|contains\|map\|parseJSON\|trim\|type\)\>/
 
     " CSS Styles in JavaScript
@@ -179,7 +177,7 @@ syntax keyword jsFutureKeys     abstract enum int short boolean export interface
 
     " Highlight ways
     syntax match jsDotNotation      "\." nextgroup=jsPrototype,jsDomElemAttrs,jsDomElemFuncs,jsHtmlElemAttrs,jsHtmlElemFuncs
-    syntax match jsDotNotation      "\." nextgroup=jsJqueryFuncs
+    syntax match jsDotNotation      "\.\(\w\+(\)\@=" nextgroup=jsJqueryFuncs
     syntax match jsDotNotation      "\$\." nextgroup=jsJqueryCoreFuncs
     syntax match jsDotNotation      "\.style\." nextgroup=jsCssStyles
 
