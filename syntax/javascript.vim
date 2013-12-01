@@ -69,7 +69,8 @@ if !exists("javascript_ignore_javaScriptdoc")
   syntax match  jsDocType         contained "\%(#\|\"\|\w\|\.\|:\|\/\)\+" nextgroup=jsDocParam skipwhite
   syntax region jsDocTypeNoParam  start="{" end="}" oneline contained
   syntax match  jsDocTypeNoParam  contained "\%(#\|\"\|\w\|\.\|:\|\/\)\+"
-  syntax match  jsDocParam        contained "\%(#\|\"\|{\|}\|\w\|\.\|:\|\/\)\+"
+" To support: { type } [param1 = defaultValueOrString] - Details
+  syntax match  jsDocParam        contained "\%([^-]\)\+\(-\)\@="
   syntax region jsDocSeeTag       contained matchgroup=jsDocSeeTag start="{" end="}" contains=jsDocTags
 
   syntax case match
